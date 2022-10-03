@@ -1,9 +1,11 @@
-import React from 'react';
-
+import Landing from "./pages/Landing";
 
 function App() {
   return (
-   <h1>Hotel Manager</h1>
+    <div>
+      <h1>Hotel Manager</h1>
+      <Landing />
+    </div>
   );
 }
 
