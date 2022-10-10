@@ -15,7 +15,7 @@ const Register = (props: Props) => {
   const [values, setValues] = useState(initialState);
 
   //global state and useNavigate
-  const { showAlert, displayAlert } = useAppContext();
+  const { isLoading, showAlert, displayAlert, registerUser } = useAppContext();
 
   const toggleMember = () => {
     setValues({ ...values, isMember: !values.isMember });
@@ -32,7 +32,12 @@ const Register = (props: Props) => {
       displayAlert();
       return;
     }
-    console.log(values);
+    const currentUser = { name, email, password };
+    if (isMember) {
+      console.log("Already a member");
+    } else {
+      registerUser(currentUser);
+    }
   };
 
   return (
@@ -65,7 +70,7 @@ const Register = (props: Props) => {
           value={values.password}
           handleChange={handleChange}
         />
-        <button type="submit" className="btn btn-block">
+        <button type="submit" className="btn btn-block" disabled={isLoading}>
           Submit
         </button>
         <p>

@@ -1,8 +1,15 @@
 import React, { useState, useReducer, useContext } from "react";
+import axios, { AxiosError } from "axios";
 
 import reducer from "./reducer";
 
-import { DISPLAY_ALERT, CLEAR_ALERT } from "./actions";
+import {
+  DISPLAY_ALERT,
+  CLEAR_ALERT,
+  REGISTER_USER_BEGIN,
+  REGISTER_USER_SUCCESS,
+  REGISTER_USER_ERROR,
+} from "./actions";
 
 interface AppContextValue {
   isLoading: boolean;
@@ -10,6 +17,7 @@ interface AppContextValue {
   alertText: string;
   alertType: string;
   displayAlert: any;
+  registerUser: any;
 }
 
 const initialState = {
@@ -18,6 +26,9 @@ const initialState = {
   alertText: "",
   alertType: "",
   displayAlert: "",
+  registerUser: "",
+  user: null,
+  token: null,
 };
 
 const AppContext = React.createContext<AppContextValue>(initialState);
@@ -36,8 +47,33 @@ const AppProvider = ({ children }: any) => {
     }, 3000);
   };
 
+  const registerUser = async (currentUser: any) => {
+    dispatch({ type: REGISTER_USER_BEGIN });
+    try {
+      const response = await axios.post(
+        "http://localhost:5000/api/v1/auth/register",
+        currentUser,
+        { withCredentials: true }
+      );
+      console.log(response);
+      const { user, token } = response.data;
+      dispatch({
+        type: REGISTER_USER_SUCCESS,
+        payload: { user, token },
+      });
+      //add user to localStorage / cookies
+    } catch (error: any) {
+      console.log(error.response);
+      dispatch({
+        type: REGISTER_USER_ERROR,
+        payload: { msg: error.response.data.msg },
+      });
+    }
+    clearAlert();
+  };
+
   return (
-    <AppContext.Provider value={{ ...state, displayAlert }}>
+    <AppContext.Provider value={{ ...state, displayAlert, registerUser }}>
       {children}
     </AppContext.Provider>
   );
