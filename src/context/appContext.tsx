@@ -11,6 +11,8 @@ import {
   REGISTER_USER_ERROR,
 } from "./actions";
 
+const user = localStorage.getItem("user");
+
 interface AppContextValue {
   isLoading: boolean;
   showAlert: boolean;
@@ -18,6 +20,7 @@ interface AppContextValue {
   alertType: string;
   displayAlert: any;
   registerUser: any;
+  user: any;
 }
 
 const initialState = {
@@ -27,7 +30,7 @@ const initialState = {
   alertType: "",
   displayAlert: "",
   registerUser: "",
-  user: null,
+  user: user ? JSON.parse(user) : null,
   token: null,
 };
 
@@ -47,6 +50,13 @@ const AppProvider = ({ children }: any) => {
     }, 3000);
   };
 
+  const addUserToLocalStorage = ({ user }: any) => {
+    localStorage.setItem("user", JSON.stringify(user));
+  };
+  const removeUserToLocalStorage = ({ user }: any) => {
+    localStorage.removeItem("user");
+  };
+
   const registerUser = async (currentUser: any) => {
     dispatch({ type: REGISTER_USER_BEGIN });
     try {
@@ -61,7 +71,7 @@ const AppProvider = ({ children }: any) => {
         type: REGISTER_USER_SUCCESS,
         payload: { user, token },
       });
-      //add user to localStorage / cookies
+      addUserToLocalStorage({ user });
     } catch (error: any) {
       console.log(error.response);
       dispatch({
