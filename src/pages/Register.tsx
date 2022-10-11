@@ -15,7 +15,7 @@ type Props = {};
 const Register = (props: Props) => {
   const [values, setValues] = useState(initialState);
   const navigate = useNavigate();
-  const { user, isLoading, showAlert, displayAlert, registerUser } =
+  const { user, isLoading, showAlert, displayAlert, registerUser, loginUser } =
     useAppContext();
 
   const toggleMember = () => {
@@ -35,7 +35,7 @@ const Register = (props: Props) => {
     }
     const currentUser = { name, email, password };
     if (isMember) {
-      console.log("Already a member");
+      loginUser(currentUser);
     } else {
       registerUser(currentUser);
     }
