@@ -12,6 +12,8 @@ import {
   LOGIN_USER_BEGIN,
   LOGIN_USER_SUCCESS,
   LOGIN_USER_ERROR,
+  TOGGLE_SIDEBAR,
+  LOGOUT_USER,
 } from "./actions";
 
 const user = localStorage.getItem("user");
@@ -25,6 +27,9 @@ interface AppContextValue {
   registerUser: any;
   loginUser: any;
   user: any;
+  showSidebar: boolean;
+  toggleSidebar: any;
+  logoutUser: any;
 }
 interface User {
   name: string;
@@ -42,6 +47,9 @@ const initialState = {
   loginUser: "",
   user: user ? JSON.parse(user) : null,
   token: null,
+  showSidebar: false,
+  toggleSidebar: "",
+  logoutUser: false,
 };
 
 const AppContext = React.createContext<AppContextValue>(initialState);
@@ -60,11 +68,20 @@ const AppProvider = ({ children }: any) => {
     }, 3000);
   };
 
+  const toggleSidebar = () => {
+    dispatch({ type: TOGGLE_SIDEBAR });
+  };
+
   const addUserToLocalStorage = ({ user }: any) => {
     localStorage.setItem("user", JSON.stringify(user));
   };
-  const removeUserToLocalStorage = ({ user }: any) => {
+  const removeUserToLocalStorage = () => {
     localStorage.removeItem("user");
+  };
+
+  const logoutUser = () => {
+    dispatch({ type: LOGOUT_USER });
+    removeUserToLocalStorage();
   };
 
   const registerUser = async (currentUser: any) => {
@@ -119,7 +136,14 @@ const AppProvider = ({ children }: any) => {
 
   return (
     <AppContext.Provider
-      value={{ ...state, displayAlert, registerUser, loginUser }}
+      value={{
+        ...state,
+        displayAlert,
+        registerUser,
+        loginUser,
+        toggleSidebar,
+        logoutUser,
+      }}
     >
       {children}
     </AppContext.Provider>
