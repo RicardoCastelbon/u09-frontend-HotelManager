@@ -30,6 +30,7 @@ interface AppContextValue {
   showSidebar: boolean;
   toggleSidebar: any;
   logoutUser: any;
+  updateUser:any
 }
 interface User {
   name: string;
@@ -50,6 +51,7 @@ const initialState = {
   showSidebar: false,
   toggleSidebar: "",
   logoutUser: false,
+  updateUser:""
 };
 
 const AppContext = React.createContext<AppContextValue>(initialState);
@@ -134,6 +136,10 @@ const AppProvider = ({ children }: any) => {
     clearAlert();
   };
 
+  const updateUser = async (currentUser: any) => {
+    console.log(currentUser);
+  };
+
   return (
     <AppContext.Provider
       value={{
@@ -143,6 +149,7 @@ const AppProvider = ({ children }: any) => {
         loginUser,
         toggleSidebar,
         logoutUser,
+        updateUser
       }}
     >
       {children}
