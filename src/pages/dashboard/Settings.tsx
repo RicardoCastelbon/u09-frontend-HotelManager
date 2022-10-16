@@ -9,7 +9,7 @@ const Settings = (props: Props) => {
     useAppContext();
   const [name, setName] = useState(user?.name);
   const [email, setEmail] = useState(user?.email);
-  const [lastName, setLastName] = useState(user?.lasName);
+  const [lastName, setLastName] = useState(user?.lastName);
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
