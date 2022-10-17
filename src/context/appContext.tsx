@@ -155,6 +155,11 @@ const AppProvider = ({ children }: any) => {
         type: UPDATE_USER_ERROR,
         payload: { msg: error.response.data.msg },
       });
+      if (error.response.status === 401) {
+        setTimeout(() => {
+          logoutUser();
+        }, 3000);
+      }
     }
     clearAlert();
   };

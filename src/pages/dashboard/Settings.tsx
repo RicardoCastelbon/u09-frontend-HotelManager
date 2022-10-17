@@ -13,10 +13,10 @@ const Settings = (props: Props) => {
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-   /*  if (!email || !name || !lastName) {
+      if (!email || !name || !lastName) {
       displayAlert();
       return;
-    } */
+    }  
     updateUser({ name, email, lastName });
   };
   return (
