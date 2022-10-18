@@ -1,11 +1,11 @@
 type Props = {
   type: string;
+  labelText?: string;
   name: string;
   value: string | number;
   handleChange: React.ChangeEventHandler<HTMLInputElement>;
-  labelText?: string;
 };
-const FormRow = (props: Props) => {
+const FormRowDate = (props: Props) => {
   return (
     <div className="form-row">
       <label htmlFor={props.name} className="form-label">
@@ -13,12 +13,12 @@ const FormRow = (props: Props) => {
       </label>
       <input
         type={props.type}
-        value={props.value}
         name={props.name}
+        value={props.value}
         onChange={props.handleChange}
-        className="form-input"
+        className="form-select"
       />
     </div>
   );
 };
-export default FormRow;
+export default FormRowDate;

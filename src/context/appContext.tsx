@@ -17,6 +17,11 @@ import {
   UPDATE_USER_BEGIN,
   UPDATE_USER_SUCCESS,
   UPDATE_USER_ERROR,
+  HANDLE_CHANGE,
+  CLEAR_VALUES,
+  CREATE_JOB_BEGIN,
+  CREATE_JOB_SUCCESS,
+  CREATE_JOB_ERROR,
 } from "./actions";
 
 const user = localStorage.getItem("user");
@@ -34,11 +39,22 @@ interface AppContextValue {
   toggleSidebar: any;
   logoutUser: any;
   updateUser: any;
-}
-interface User {
-  name: string;
+  isEditing: boolean;
+  editBookingId: string;
+  roomTypeOptions: string[];
+  roomType: string;
+  checkin: string;
+  checkout: string;
+  price: number;
+  firstName: string;
+  lastName: string;
   email: string;
-  role: string;
+  phone: string;
+  statusOptions: string[];
+  status: string;
+  handleChange: any;
+  clearValues: any;
+  createJob: any;
 }
 
 const initialState = {
@@ -55,6 +71,22 @@ const initialState = {
   toggleSidebar: "",
   logoutUser: false,
   updateUser: "",
+  isEditing: false,
+  editBookingId: "",
+  roomTypeOptions: ["single", "double", "triple"],
+  roomType: "single",
+  checkin: "",
+  checkout: "",
+  price: 0,
+  firstName: "",
+  lastName: "",
+  email: "",
+  phone: "",
+  statusOptions: ["confirmed", "cancelled", "checkedIn", "checkedOut"],
+  status: "confirmed",
+  handleChange: "",
+  clearValues: "",
+  createJob: "",
 };
 
 const AppContext = React.createContext<AppContextValue>(initialState);
@@ -164,6 +196,60 @@ const AppProvider = ({ children }: any) => {
     clearAlert();
   };
 
+  const handleChange = ({ name, value }: any) => {
+    dispatch({
+      type: HANDLE_CHANGE,
+      payload: { name, value },
+    });
+  };
+
+  const createJob = async () => {
+    dispatch({ type: CREATE_JOB_BEGIN });
+    try {
+      const {
+        roomType,
+        checkin,
+        checkout,
+        price,
+        firstName,
+        lastName,
+        email,
+        phone,
+        status,
+      } = state;
+      await axios.post(
+        "http://localhost:5000/api/v1/bookings",
+        {
+          roomType,
+          checkin,
+          checkout,
+          price,
+          firstName,
+          lastName,
+          email,
+          phone,
+          status,
+        },
+        { withCredentials: true }
+      );
+      dispatch({
+        type: CREATE_JOB_SUCCESS,
+      });
+      dispatch({ type: CLEAR_VALUES });
+    } catch (error: any) {
+      if (error.response.status === 401) logoutUser();
+      dispatch({
+        type: CREATE_JOB_ERROR,
+        payload: { msg: error.response.data.msg },
+      });
+    }
+    clearAlert();
+  };
+
+  const clearValues = () => {
+    dispatch({ type: CLEAR_VALUES });
+  };
+
   return (
     <AppContext.Provider
       value={{
@@ -174,6 +260,9 @@ const AppProvider = ({ children }: any) => {
         toggleSidebar,
         logoutUser,
         updateUser,
+        handleChange,
+        clearValues,
+        createJob,
       }}
     >
       {children}
