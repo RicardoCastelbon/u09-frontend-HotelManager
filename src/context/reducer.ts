@@ -14,9 +14,11 @@ import {
   UPDATE_USER_ERROR,
   HANDLE_CHANGE,
   CLEAR_VALUES,
-  CREATE_JOB_BEGIN,
-  CREATE_JOB_SUCCESS,
-  CREATE_JOB_ERROR,
+  CREATE_BOOKING_BEGIN,
+  CREATE_BOOKING_SUCCESS,
+  CREATE_BOOKING_ERROR,
+  GET_BOOKINGS_BEGIN,
+  GET_BOOKINGS_SUCCESS,
 } from "./actions";
 
 import { initialState } from "./appContext";
@@ -151,30 +153,47 @@ const reducer = (state: any, action: any) => {
     return { ...state, ...initialState };
   }
 
-   if (action.type === CREATE_JOB_BEGIN) {
-     return {
-       ...state,
-       isLoading: true,
-     };
-   }
-   if (action.type === CREATE_JOB_SUCCESS) {
-     return {
-       ...state,
-       isLoading: false,
-       showAlert: true,
-       alertType: "success",
-       alertText: "Booking created!!",
-     };
-   }
-   if (action.type === CREATE_JOB_ERROR) {
-     return {
-       ...state,
-       isLoading: false,
-       showAlert: true,
-       alertType: "danger",
-       alertText: action.payload.msg,
-     };
-   }
+  if (action.type === CREATE_BOOKING_BEGIN) {
+    return {
+      ...state,
+      isLoading: true,
+    };
+  }
+  if (action.type === CREATE_BOOKING_SUCCESS) {
+    return {
+      ...state,
+      isLoading: false,
+      showAlert: true,
+      alertType: "success",
+      alertText: "Booking created!!",
+    };
+  }
+  if (action.type === CREATE_BOOKING_ERROR) {
+    return {
+      ...state,
+      isLoading: false,
+      showAlert: true,
+      alertType: "danger",
+      alertText: action.payload.msg,
+    };
+  }
+
+  if (action.type === GET_BOOKINGS_BEGIN) {
+    return {
+      ...state,
+      isLoading: true,
+      showAlert: false,
+    };
+  }
+  if (action.type === GET_BOOKINGS_SUCCESS) {
+    return {
+      ...state,
+      isLoading: false,
+      bookings: action.payload.bookings,
+      totalBookings: action.payload.totalBookings,
+      numOfPages: action.payload.numOfPages,
+    };
+  }
   throw new Error(`No such action: ${action.type}`);
 };
 export default reducer;

@@ -21,20 +21,20 @@ const AddBooking = (props: Props) => {
     status,
     handleChange,
     clearValues,
-    createJob,
+    createBooking,
   } = useAppContext();
 
   const onSubmit = (e: any) => {
     e.preventDefault();
-      if (!price || !firstName || !lastName || !email || !phone) {
+    if (!price || !firstName || !lastName || !email || !phone) {
       displayAlert();
       return;
-    } 
+    }
     if (isEditing) {
       //edit booking
       return;
     }
-    createJob();
+    createBooking();
   };
 
   const handleBookingInput = (e: any) => {

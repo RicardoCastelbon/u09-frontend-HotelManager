@@ -1,4 +1,4 @@
-import React, { useState, useReducer, useContext } from "react";
+import React, { useReducer, useContext } from "react";
 import axios, { AxiosError } from "axios";
 
 import reducer from "./reducer";
@@ -19,9 +19,11 @@ import {
   UPDATE_USER_ERROR,
   HANDLE_CHANGE,
   CLEAR_VALUES,
-  CREATE_JOB_BEGIN,
-  CREATE_JOB_SUCCESS,
-  CREATE_JOB_ERROR,
+  CREATE_BOOKING_BEGIN,
+  CREATE_BOOKING_SUCCESS,
+  CREATE_BOOKING_ERROR,
+  GET_BOOKINGS_BEGIN,
+  GET_BOOKINGS_SUCCESS,
 } from "./actions";
 
 const user = localStorage.getItem("user");
@@ -54,7 +56,11 @@ interface AppContextValue {
   status: string;
   handleChange: any;
   clearValues: any;
-  createJob: any;
+  createBooking: any;
+  bookings: any[];
+  totalBookings: number;
+  numOfPages: number;
+  page: number;
 }
 
 const initialState = {
@@ -86,7 +92,11 @@ const initialState = {
   status: "confirmed",
   handleChange: "",
   clearValues: "",
-  createJob: "",
+  createBooking: "",
+  bookings: [],
+  totalBookings: 0,
+  numOfPages: 1,
+  page: 1,
 };
 
 const AppContext = React.createContext<AppContextValue>(initialState);
@@ -203,8 +213,8 @@ const AppProvider = ({ children }: any) => {
     });
   };
 
-  const createJob = async () => {
-    dispatch({ type: CREATE_JOB_BEGIN });
+  const createBooking = async () => {
+    dispatch({ type: CREATE_BOOKING_BEGIN });
     try {
       const {
         roomType,
@@ -233,7 +243,7 @@ const AppProvider = ({ children }: any) => {
         { withCredentials: true }
       );
       dispatch({
-        type: CREATE_JOB_SUCCESS,
+        type: CREATE_BOOKING_SUCCESS,
       });
       dispatch({ type: CLEAR_VALUES });
     } catch (error: any) {
@@ -243,7 +253,7 @@ const AppProvider = ({ children }: any) => {
         }, 3000);
       }
       dispatch({
-        type: CREATE_JOB_ERROR,
+        type: CREATE_BOOKING_ERROR,
         payload: { msg: error.response.data.msg },
       });
     }
@@ -252,6 +262,31 @@ const AppProvider = ({ children }: any) => {
 
   const clearValues = () => {
     dispatch({ type: CLEAR_VALUES });
+  };
+
+  const getBookings = async () => {
+    let url = `http://localhost:5000/api/v1/bookings`;
+
+    dispatch({ type: GET_BOOKINGS_BEGIN });
+    try {
+      const response = await axios.get(
+        "http://localhost:5000/api/v1/bookings",
+        { withCredentials: true }
+      );
+      const { bookings, totalBookings, numOfPages } = response.data;
+      dispatch({
+        type: GET_BOOKINGS_SUCCESS,
+        payload: {
+          bookings,
+          totalBookings,
+          numOfPages,
+        },
+      });
+    } catch (error: any) {
+      console.log(error.response);
+      //logoutUser();
+    }
+    clearAlert();
   };
 
   return (
@@ -266,7 +301,7 @@ const AppProvider = ({ children }: any) => {
         updateUser,
         handleChange,
         clearValues,
-        createJob,
+        createBooking,
       }}
     >
       {children}
