@@ -4,6 +4,7 @@ import { useAppContext } from "../../context/appContext";
 type Props = {};
 const AddBooking = (props: Props) => {
   const {
+    isLoading,
     showAlert,
     displayAlert,
     isEditing,
@@ -25,10 +26,10 @@ const AddBooking = (props: Props) => {
 
   const onSubmit = (e: any) => {
     e.preventDefault();
-    /*  if (!price || !firstName || !lastName || !email || !phone) {
+      if (!price || !firstName || !lastName || !email || !phone) {
       displayAlert();
       return;
-    } */
+    } 
     if (isEditing) {
       //edit booking
       return;
@@ -126,6 +127,7 @@ const AddBooking = (props: Props) => {
               className="btn btn-block submit-btn"
               type="submit"
               onClick={onSubmit}
+              disabled={isLoading}
             >
               submit
             </button>

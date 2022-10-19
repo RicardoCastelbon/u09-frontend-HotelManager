@@ -237,7 +237,11 @@ const AppProvider = ({ children }: any) => {
       });
       dispatch({ type: CLEAR_VALUES });
     } catch (error: any) {
-      if (error.response.status === 401) logoutUser();
+      if (error.response.status === 401) {
+        setTimeout(() => {
+          logoutUser();
+        }, 3000);
+      }
       dispatch({
         type: CREATE_JOB_ERROR,
         payload: { msg: error.response.data.msg },
