@@ -24,6 +24,7 @@ import {
   CREATE_BOOKING_ERROR,
   GET_BOOKINGS_BEGIN,
   GET_BOOKINGS_SUCCESS,
+  SET_EDIT_BOOKING,
 } from "./actions";
 
 const user = localStorage.getItem("user");
@@ -61,6 +62,10 @@ interface AppContextValue {
   totalBookings: number;
   numOfPages: number;
   page: number;
+  getBookings: any;
+  setEditBooking: any;
+  deleteBooking: any;
+  editBooking: any;
 }
 
 const initialState = {
@@ -97,6 +102,10 @@ const initialState = {
   totalBookings: 0,
   numOfPages: 1,
   page: 1,
+  getBookings: "",
+  setEditBooking: "",
+  deleteBooking: "",
+  editBooking: "",
 };
 
 const AppContext = React.createContext<AppContextValue>(initialState);
@@ -289,6 +298,16 @@ const AppProvider = ({ children }: any) => {
     clearAlert();
   };
 
+  const deleteBooking = (id: number) => {
+    console.log(`delete: ${id}`);
+  };
+  const setEditBooking = (id: number) => {
+    dispatch({ type: SET_EDIT_BOOKING, payload: { id } });
+  };
+  const editBooking = () => {
+    console.log("edit booking");
+  };
+
   return (
     <AppContext.Provider
       value={{
@@ -302,6 +321,10 @@ const AppProvider = ({ children }: any) => {
         handleChange,
         clearValues,
         createBooking,
+        getBookings,
+        setEditBooking,
+        deleteBooking,
+        editBooking,
       }}
     >
       {children}

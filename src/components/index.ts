@@ -6,6 +6,9 @@ import SmallSidebar from "./SmallSidebar";
 import Navbar from "./Navbar";
 import FormRowSelect from "./FormRowSelect";
 import FormRowDate from "./FormRowDate";
+import BookingsContainer from "./BookingsContainer";
+import SearchContainer from "./SearchContainer";
+import Loading from "./Loading";
 
 export {
   Logo,
@@ -15,5 +18,8 @@ export {
   SmallSidebar,
   Navbar,
   FormRowSelect,
-  FormRowDate
+  FormRowDate,
+  BookingsContainer,
+  SearchContainer,
+  Loading,
 };

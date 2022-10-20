@@ -19,6 +19,7 @@ import {
   CREATE_BOOKING_ERROR,
   GET_BOOKINGS_BEGIN,
   GET_BOOKINGS_SUCCESS,
+  SET_EDIT_BOOKING,
 } from "./actions";
 
 import { initialState } from "./appContext";
@@ -192,6 +193,38 @@ const reducer = (state: any, action: any) => {
       bookings: action.payload.bookings,
       totalBookings: action.payload.totalBookings,
       numOfPages: action.payload.numOfPages,
+    };
+  }
+
+  if (action.type === SET_EDIT_BOOKING) {
+    const booking = state.bookings.find(
+      (booking: any) => booking._id === action.payload.id
+    );
+    const {
+      _id,
+      roomType,
+      checkin,
+      checkout,
+      price,
+      firstName,
+      lastName,
+      email,
+      phone,
+      status,
+    } = booking;
+    return {
+      ...state,
+      isEditing: true,
+      editBookingId: _id,
+      roomType,
+      checkin,
+      checkout,
+      price,
+      firstName,
+      lastName,
+      email,
+      phone,
+      status,
     };
   }
   throw new Error(`No such action: ${action.type}`);

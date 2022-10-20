@@ -1,7 +1,12 @@
-type Props = {}
+import { BookingsContainer, SearchContainer } from "../../components";
+
+type Props = {};
 const Bookings = (props: Props) => {
   return (
-    <div>Bookings</div>
-  )
-}
-export default Bookings
+    <>
+      <SearchContainer />
+      <BookingsContainer />
+    </>
+  );
+};
+export default Bookings;

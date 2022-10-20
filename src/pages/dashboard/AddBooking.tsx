@@ -22,6 +22,7 @@ const AddBooking = (props: Props) => {
     handleChange,
     clearValues,
     createBooking,
+    editBooking,
   } = useAppContext();
 
   const onSubmit = (e: any) => {
@@ -31,7 +32,7 @@ const AddBooking = (props: Props) => {
       return;
     }
     if (isEditing) {
-      //edit booking
+      editBooking();
       return;
     }
     createBooking();
