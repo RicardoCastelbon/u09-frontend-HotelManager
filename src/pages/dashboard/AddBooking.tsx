@@ -116,7 +116,7 @@ const AddBooking = (props: Props) => {
 
           {/* statusType */}
           <FormRowSelect
-            name="statusType"
+            name="status"
             labelText="status"
             value={status}
             handleChange={handleBookingInput}

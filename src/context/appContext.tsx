@@ -25,7 +25,10 @@ import {
   GET_BOOKINGS_BEGIN,
   GET_BOOKINGS_SUCCESS,
   SET_EDIT_BOOKING,
-  DELETE_JOB_BEGIN,
+  DELETE_BOOKING_BEGIN,
+  EDIT_BOOKING_BEGIN,
+  EDIT_BOOKING_SUCCESS,
+  EDIT_BOOKING_ERROR,
 } from "./actions";
 
 const user = localStorage.getItem("user");
@@ -304,25 +307,65 @@ const AppProvider = ({ children }: any) => {
   };
 
   const deleteBooking = async (id: number) => {
-    dispatch({ type: DELETE_JOB_BEGIN });
+    dispatch({ type: DELETE_BOOKING_BEGIN });
     try {
       await axios.delete(`http://localhost:5000/api/v1/bookings/${id}`, {
         withCredentials: true,
       });
       getBookings();
-    } catch (error:any) {
-     if (error.response.status === 401) {
-       setTimeout(() => {
-         //logoutUser();
-       }, 3000);
-     }
+    } catch (error: any) {
+      if (error.response.status === 401) {
+        setTimeout(() => {
+          //logoutUser();
+        }, 3000);
+      }
     }
   };
   const setEditBooking = (id: number) => {
     dispatch({ type: SET_EDIT_BOOKING, payload: { id } });
   };
-  const editBooking = () => {
-    console.log("edit booking");
+  const editBooking = async () => {
+    dispatch({ type: EDIT_BOOKING_BEGIN });
+    try {
+      const {
+        roomType,
+        checkin,
+        checkout,
+        price,
+        firstName,
+        lastName,
+        email,
+        phone,
+        status,
+      } = state;
+
+      await axios.patch(
+        `http://localhost:5000/api/v1/bookings/${state.editBookingId}`,
+        {
+          roomType,
+          checkin,
+          checkout,
+          price,
+          firstName,
+          lastName,
+          email,
+          phone,
+          status,
+        },
+        {
+          withCredentials: true,
+        }
+      );
+      dispatch({ type: EDIT_BOOKING_SUCCESS });
+      dispatch({ type: CLEAR_VALUES });
+    } catch (error: any) {
+      if (error.response.status === 401) return;
+      dispatch({
+        type: EDIT_BOOKING_ERROR,
+        payload: { msg: error.response.data.msg },
+      });
+    }
+    clearAlert();
   };
 
   return (

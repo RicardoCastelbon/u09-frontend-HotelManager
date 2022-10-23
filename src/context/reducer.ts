@@ -20,7 +20,10 @@ import {
   GET_BOOKINGS_BEGIN,
   GET_BOOKINGS_SUCCESS,
   SET_EDIT_BOOKING,
-  DELETE_JOB_BEGIN,
+  DELETE_BOOKING_BEGIN,
+  EDIT_BOOKING_BEGIN,
+  EDIT_BOOKING_SUCCESS,
+  EDIT_BOOKING_ERROR,
 } from "./actions";
 
 import { initialState } from "./appContext";
@@ -228,9 +231,36 @@ const reducer = (state: any, action: any) => {
       status,
     };
   }
-  if (action.type === DELETE_JOB_BEGIN) {
+
+  if (action.type === DELETE_BOOKING_BEGIN) {
     return { ...state, isLoading: true };
   }
+
+  if (action.type === EDIT_BOOKING_BEGIN) {
+    return {
+      ...state,
+      isLoading: true,
+    };
+  }
+  if (action.type === EDIT_BOOKING_SUCCESS) {
+    return {
+      ...state,
+      isLoading: false,
+      showAlert: true,
+      alertType: "success",
+      alertText: "Booking Updated!",
+    };
+  }
+  if (action.type === EDIT_BOOKING_ERROR) {
+    return {
+      ...state,
+      isLoading: false,
+      showAlert: true,
+      alertType: "danger",
+      alertText: action.payload.msg,
+    };
+  }
+
   throw new Error(`No such action: ${action.type}`);
 };
 export default reducer;
