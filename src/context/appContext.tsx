@@ -25,6 +25,7 @@ import {
   GET_BOOKINGS_BEGIN,
   GET_BOOKINGS_SUCCESS,
   SET_EDIT_BOOKING,
+  DELETE_JOB_BEGIN,
 } from "./actions";
 
 const user = localStorage.getItem("user");
@@ -293,13 +294,29 @@ const AppProvider = ({ children }: any) => {
       });
     } catch (error: any) {
       console.log(error.response);
-      //logoutUser();
+      if (error.response.status === 401) {
+        setTimeout(() => {
+          //logoutUser();
+        }, 3000);
+      }
     }
     clearAlert();
   };
 
-  const deleteBooking = (id: number) => {
-    console.log(`delete: ${id}`);
+  const deleteBooking = async (id: number) => {
+    dispatch({ type: DELETE_JOB_BEGIN });
+    try {
+      await axios.delete(`http://localhost:5000/api/v1/bookings/${id}`, {
+        withCredentials: true,
+      });
+      getBookings();
+    } catch (error:any) {
+     if (error.response.status === 401) {
+       setTimeout(() => {
+         //logoutUser();
+       }, 3000);
+     }
+    }
   };
   const setEditBooking = (id: number) => {
     dispatch({ type: SET_EDIT_BOOKING, payload: { id } });

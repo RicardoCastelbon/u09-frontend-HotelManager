@@ -20,6 +20,7 @@ import {
   GET_BOOKINGS_BEGIN,
   GET_BOOKINGS_SUCCESS,
   SET_EDIT_BOOKING,
+  DELETE_JOB_BEGIN,
 } from "./actions";
 
 import { initialState } from "./appContext";
@@ -226,6 +227,9 @@ const reducer = (state: any, action: any) => {
       phone,
       status,
     };
+  }
+  if (action.type === DELETE_JOB_BEGIN) {
+    return { ...state, isLoading: true };
   }
   throw new Error(`No such action: ${action.type}`);
 };
