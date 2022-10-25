@@ -24,6 +24,7 @@ import {
   EDIT_BOOKING_BEGIN,
   EDIT_BOOKING_SUCCESS,
   EDIT_BOOKING_ERROR,
+  CLEAR_FILTERS,
 } from "./actions";
 
 import { initialState } from "./appContext";
@@ -258,6 +259,15 @@ const reducer = (state: any, action: any) => {
       showAlert: true,
       alertType: "danger",
       alertText: action.payload.msg,
+    };
+  }
+
+  if (action.type === CLEAR_FILTERS) {
+    return {
+      ...state,
+      search: "",
+      searchStatus: "all",
+      sort: "latest",
     };
   }
 

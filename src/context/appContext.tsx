@@ -29,6 +29,7 @@ import {
   EDIT_BOOKING_BEGIN,
   EDIT_BOOKING_SUCCESS,
   EDIT_BOOKING_ERROR,
+  CLEAR_FILTERS,
 } from "./actions";
 
 const user = localStorage.getItem("user");
@@ -70,6 +71,11 @@ interface AppContextValue {
   setEditBooking: any;
   deleteBooking: any;
   editBooking: any;
+  search: string;
+  searchStatus: string;
+  sort: string;
+  sortOptions: string[];
+  clearFilters: any;
 }
 
 const initialState = {
@@ -110,6 +116,11 @@ const initialState = {
   setEditBooking: "",
   deleteBooking: "",
   editBooking: "",
+  search: "",
+  searchStatus: "all",
+  sort: "latest",
+  sortOptions: ["latest", "oldest", "a-z", "z-a"],
+  clearFilters: "",
 };
 
 const AppContext = React.createContext<AppContextValue>(initialState);
@@ -278,12 +289,16 @@ const AppProvider = ({ children }: any) => {
   };
 
   const getBookings = async () => {
-    let url = `http://localhost:5000/api/v1/bookings`;
+    const { search, searchStatus, searchType, sort } = state;
+    let url = `http://localhost:5000/api/v1/bookings?status=${searchStatus}&sort=${sort}`;
+    if (search) {
+      url = url + `&search=${search}`;
+    }
 
     dispatch({ type: GET_BOOKINGS_BEGIN });
     try {
       const response = await axios.get(
-        "http://localhost:5000/api/v1/bookings",
+        url,
         { withCredentials: true }
       );
       const { bookings, totalBookings, numOfPages } = response.data;
@@ -368,6 +383,10 @@ const AppProvider = ({ children }: any) => {
     clearAlert();
   };
 
+  const clearFilters = () => {
+    dispatch({ type: CLEAR_FILTERS });
+  };
+
   return (
     <AppContext.Provider
       value={{
@@ -385,6 +404,7 @@ const AppProvider = ({ children }: any) => {
         setEditBooking,
         deleteBooking,
         editBooking,
+        clearFilters,
       }}
     >
       {children}

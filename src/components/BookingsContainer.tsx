@@ -5,12 +5,20 @@ import Booking from "./Booking";
 import Loading from "./Loading";
 
 const BookingsContainer = () => {
-  const { getBookings, bookings, isLoading, page, totalBookings } =
-    useAppContext();
+  const {
+    getBookings,
+    bookings,
+    isLoading,
+    page,
+    totalBookings,
+    search,
+    searchStatus,
+    sort,
+  } = useAppContext();
 
   useEffect(() => {
     getBookings();
-  }, []);
+  }, [search, searchStatus, sort]);
 
   if (isLoading) {
     return <Loading center />;
