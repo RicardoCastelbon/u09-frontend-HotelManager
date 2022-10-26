@@ -10,14 +10,32 @@ const Settings = (props: Props) => {
   const [name, setName] = useState(user?.name);
   const [email, setEmail] = useState(user?.email);
   const [lastName, setLastName] = useState(user?.lastName);
+  const [employeeName, setEmployeeName] = useState("");
+  const [employeeLastName, setEmployeeLastName] = useState("");
+  const [employeeEmail, setEmployeeEmail] = useState("");
+  const [employeePassword, setEmployeePassword] = useState("");
+
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-      if (!email || !name || !lastName) {
+    if (!email || !name || !lastName) {
       displayAlert();
       return;
-    }  
+    }
     updateUser({ name, email, lastName });
+  };
+  const onSubmitCreateEmployee = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (
+      !employeeName ||
+      !employeeLastName ||
+      !employeeEmail ||
+      !employeePassword
+    ) {
+      displayAlert();
+      return;
+    }
+    //createEmployee({employeeName, employeeLastName, employeeEmail, employeePassword });
   };
   return (
     <Wrapper>
@@ -51,6 +69,50 @@ const Settings = (props: Props) => {
           </button>
         </div>
       </form>
+
+      {/* CREATE AN EMPLOYEE */}
+      {user.role == "admin" && (
+        <form className="form" onSubmit={onSubmitCreateEmployee}>
+          <h3>create a new employeee</h3>
+          {showAlert && <Alert />}
+
+          {/* name */}
+          <div className="form-center">
+            <FormRow
+              type="text"
+              name="name"
+              value={employeeName}
+              handleChange={(e) => setEmployeeName(e.target.value)}
+            />
+            <FormRow
+              labelText="last name"
+              type="text"
+              name="lastName"
+              value={employeeLastName}
+              handleChange={(e) => setEmployeeLastName(e.target.value)}
+            />
+            <FormRow
+              type="email"
+              name="email"
+              value={employeeEmail}
+              handleChange={(e) => setEmployeeEmail(e.target.value)}
+            />
+            <FormRow
+              type="password"
+              name="password"
+              value={employeePassword}
+              handleChange={(e) => setEmployeePassword(e.target.value)}
+            />
+            <button
+              className="btn btn-block"
+              type="submit"
+              disabled={isLoading}
+            >
+              {isLoading ? "Please Wait..." : "create employee"}
+            </button>
+          </div>
+        </form>
+      )}
     </Wrapper>
   );
 };

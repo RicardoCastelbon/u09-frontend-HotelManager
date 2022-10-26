@@ -155,7 +155,7 @@ const AppProvider = ({ children }: any) => {
     removeUserToLocalStorage();
   };
 
-  const registerUser = async (currentUser: any) => {
+  const registerUser = async (currentUser: object) => {
     dispatch({ type: REGISTER_USER_BEGIN });
     try {
       const response = await axios.post(
@@ -180,7 +180,7 @@ const AppProvider = ({ children }: any) => {
     clearAlert();
   };
 
-  const loginUser = async (currentUser: any) => {
+  const loginUser = async (currentUser: object) => {
     dispatch({ type: LOGIN_USER_BEGIN });
     try {
       const response = await axios.post(
@@ -205,7 +205,7 @@ const AppProvider = ({ children }: any) => {
     clearAlert();
   };
 
-  const updateUser = async (currentUser: any) => {
+  const updateUser = async (currentUser: object) => {
     dispatch({ type: UPDATE_USER_BEGIN });
     try {
       const response = await axios.patch(
@@ -297,10 +297,7 @@ const AppProvider = ({ children }: any) => {
 
     dispatch({ type: GET_BOOKINGS_BEGIN });
     try {
-      const response = await axios.get(
-        url,
-        { withCredentials: true }
-      );
+      const response = await axios.get(url, { withCredentials: true });
       const { bookings, totalBookings, numOfPages } = response.data;
       dispatch({
         type: GET_BOOKINGS_SUCCESS,
@@ -382,6 +379,8 @@ const AppProvider = ({ children }: any) => {
     }
     clearAlert();
   };
+
+  const createEmployee = async (employee: object) => {};
 
   const clearFilters = () => {
     dispatch({ type: CLEAR_FILTERS });

@@ -11,8 +11,7 @@ const links = [
     path: "add-booking",
     icon: <IoAddCircleOutline />,
   },
-  { id: 3, text: "search booking", path: "search-booking", icon: <AiOutlineSearch /> },
-  { id: 4, text: "settings", path: "settings", icon: <FiSettings /> },
+  { id: 3, text: "settings", path: "settings", icon: <FiSettings /> },
 ];
 
 export default links;

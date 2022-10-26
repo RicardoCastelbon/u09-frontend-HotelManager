@@ -3,7 +3,6 @@ import { Landing, Error, Register, ProtectedRoute } from "./pages";
 import {
   AddBooking,
   Bookings,
-  SearchBooking,
   Settings,
   SharedLayout,
 } from "./pages/dashboard";
@@ -21,7 +20,6 @@ function App() {
         >
           <Route index element={<Bookings />} />
           <Route path="add-booking" element={<AddBooking />} />
-          <Route path="search-booking" element={<SearchBooking />} />
           <Route path="settings" element={<Settings />} />
         </Route>
         <Route path="/register" element={<Register />} />
