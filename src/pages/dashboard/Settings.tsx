@@ -18,6 +18,7 @@ const Settings = (props: Props) => {
     employeePassword,
     employeeSalary,
     createEmployee,
+    clearValues,
   } = useAppContext();
   const [name, setName] = useState(user?.name);
   const [email, setEmail] = useState(user?.email);
@@ -40,7 +41,7 @@ const Settings = (props: Props) => {
       employeePassword,
       employeeSalary,
     });
-    
+
     if (
       !employeeName ||
       !employeeLastName ||
@@ -136,13 +137,20 @@ const Settings = (props: Props) => {
               className="btn btn-block"
               type="submit"
               disabled={isLoading}
-              onClick={onSubmitCreateEmployee}
+              onClick={(e) => {
+                onSubmitCreateEmployee(e);
+                clearValues();
+              }}
             >
               {isLoading ? "Please Wait..." : "create employee"}
             </button>
           </div>
         </form>
       )}
+
+      {/* GET ALL EMPLOYEES */}
+      
+
     </Wrapper>
   );
 };

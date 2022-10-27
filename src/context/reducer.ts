@@ -158,6 +158,11 @@ const reducer = (state: any, action: any) => {
       lastName: "",
       email: "",
       phone: "",
+      employeeName: "",
+      employeeLastName: "",
+      employeeEmail: "",
+      employeePassword: "",
+      employeeSalary: 0,
     };
     return { ...state, ...initialState };
   }
