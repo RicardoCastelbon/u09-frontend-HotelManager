@@ -1,5 +1,5 @@
 import React, { useReducer, useContext } from "react";
-import axios, { AxiosError } from "axios";
+import axios from "axios";
 
 import reducer from "./reducer";
 
@@ -30,6 +30,9 @@ import {
   EDIT_BOOKING_SUCCESS,
   EDIT_BOOKING_ERROR,
   CLEAR_FILTERS,
+  CREATE_EMPLOYEE_BEGIN,
+  CREATE_EMPLOYEE_SUCCESS,
+  CREATE_EMPLOYEE_ERROR,
 } from "./actions";
 
 const user = localStorage.getItem("user");
@@ -76,6 +79,12 @@ interface AppContextValue {
   sort: string;
   sortOptions: string[];
   clearFilters: any;
+  employeeName: string;
+  employeeLastName: string;
+  employeeEmail: string;
+  employeePassword: string;
+  employeeSalary: number;
+  createEmployee: any;
 }
 
 const initialState = {
@@ -121,6 +130,12 @@ const initialState = {
   sort: "latest",
   sortOptions: ["latest", "oldest", "a-z", "z-a"],
   clearFilters: "",
+  employeeName: "",
+  employeeLastName: "",
+  employeeEmail: "",
+  employeePassword: "",
+  createEmployee: "",
+  employeeSalary: 0,
 };
 
 const AppContext = React.createContext<AppContextValue>(initialState);
@@ -380,7 +395,44 @@ const AppProvider = ({ children }: any) => {
     clearAlert();
   };
 
-  const createEmployee = async (employee: object) => {};
+  const createEmployee = async () => {
+    dispatch({ type: CREATE_EMPLOYEE_BEGIN });
+    try {
+      const {
+        employeeName,
+        employeeLastName,
+        employeeEmail,
+        employeePassword,
+        employeeSalary,
+      } = state;
+      await axios.post(
+        "http://localhost:5000/api/v1/employees",
+        {
+          name: employeeName,
+          lastName: employeeLastName,
+          email: employeeEmail,
+          password: employeePassword,
+          salary: employeeSalary,
+        },
+        { withCredentials: true }
+      );
+      dispatch({
+        type: CREATE_EMPLOYEE_SUCCESS,
+      });
+      dispatch({ type: CLEAR_VALUES });
+    } catch (error: any) {
+      if (error.response.status === 401) {
+        setTimeout(() => {
+          logoutUser();
+        }, 3000);
+      }
+      dispatch({
+        type: CREATE_EMPLOYEE_ERROR,
+        payload: { msg: error.response.data.msg },
+      });
+    }
+    clearAlert();
+  };
 
   const clearFilters = () => {
     dispatch({ type: CLEAR_FILTERS });
@@ -404,6 +456,7 @@ const AppProvider = ({ children }: any) => {
         deleteBooking,
         editBooking,
         clearFilters,
+        createEmployee,
       }}
     >
       {children}

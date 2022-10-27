@@ -25,6 +25,9 @@ import {
   EDIT_BOOKING_SUCCESS,
   EDIT_BOOKING_ERROR,
   CLEAR_FILTERS,
+  CREATE_EMPLOYEE_BEGIN,
+  CREATE_EMPLOYEE_SUCCESS,
+  CREATE_EMPLOYEE_ERROR,
 } from "./actions";
 
 import { initialState } from "./appContext";
@@ -270,6 +273,31 @@ const reducer = (state: any, action: any) => {
       sort: "latest",
     };
   }
+
+   if (action.type === CREATE_EMPLOYEE_BEGIN) {
+     return {
+       ...state,
+       isLoading: true,
+     };
+   }
+   if (action.type === CREATE_EMPLOYEE_SUCCESS) {
+     return {
+       ...state,
+       isLoading: false,
+       showAlert: true,
+       alertType: "success",
+       alertText: "Employee created!!",
+     };
+   }
+   if (action.type === CREATE_EMPLOYEE_ERROR) {
+     return {
+       ...state,
+       isLoading: false,
+       showAlert: true,
+       alertType: "danger",
+       alertText: action.payload.msg,
+     };
+   }
 
   throw new Error(`No such action: ${action.type}`);
 };

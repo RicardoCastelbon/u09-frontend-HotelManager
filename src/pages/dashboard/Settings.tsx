@@ -5,18 +5,25 @@ import { useAppContext } from "../../context/appContext";
 
 type Props = {};
 const Settings = (props: Props) => {
-  const { user, showAlert, displayAlert, updateUser, isLoading } =
-    useAppContext();
+  const {
+    user,
+    showAlert,
+    displayAlert,
+    updateUser,
+    isLoading,
+    handleChange,
+    employeeName,
+    employeeLastName,
+    employeeEmail,
+    employeePassword,
+    employeeSalary,
+    createEmployee,
+  } = useAppContext();
   const [name, setName] = useState(user?.name);
   const [email, setEmail] = useState(user?.email);
   const [lastName, setLastName] = useState(user?.lastName);
-  const [employeeName, setEmployeeName] = useState("");
-  const [employeeLastName, setEmployeeLastName] = useState("");
-  const [employeeEmail, setEmployeeEmail] = useState("");
-  const [employeePassword, setEmployeePassword] = useState("");
 
-
-  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const onSubmit = (e: any) => {
     e.preventDefault();
     if (!email || !name || !lastName) {
       displayAlert();
@@ -24,8 +31,16 @@ const Settings = (props: Props) => {
     }
     updateUser({ name, email, lastName });
   };
-  const onSubmitCreateEmployee = (e: React.FormEvent<HTMLFormElement>) => {
+  const onSubmitCreateEmployee = (e: any) => {
     e.preventDefault();
+    console.log({
+      employeeName,
+      employeeLastName,
+      employeeEmail,
+      employeePassword,
+      employeeSalary,
+    });
+    
     if (
       !employeeName ||
       !employeeLastName ||
@@ -35,13 +50,18 @@ const Settings = (props: Props) => {
       displayAlert();
       return;
     }
-    //createEmployee({employeeName, employeeLastName, employeeEmail, employeePassword });
+    createEmployee();
   };
+
+  const handleEmployeeInput = (e: any) => {
+    handleChange({ name: e.target.name, value: e.target.value });
+  };
+
   return (
     <Wrapper>
       <form className="form" onSubmit={onSubmit}>
-        <h3>Personal info</h3>
         {showAlert && <Alert />}
+        <h3>Personal info</h3>
 
         {/* name */}
         <div className="form-center">
@@ -72,41 +92,51 @@ const Settings = (props: Props) => {
 
       {/* CREATE AN EMPLOYEE */}
       {user.role == "admin" && (
-        <form className="form" onSubmit={onSubmitCreateEmployee}>
+        <form className="form">
           <h3>create a new employeee</h3>
-          {showAlert && <Alert />}
 
           {/* name */}
           <div className="form-center">
             <FormRow
+              labelText="name"
               type="text"
-              name="name"
+              name="employeeName"
               value={employeeName}
-              handleChange={(e) => setEmployeeName(e.target.value)}
+              handleChange={handleEmployeeInput}
             />
             <FormRow
               labelText="last name"
               type="text"
-              name="lastName"
+              name="employeeLastName"
               value={employeeLastName}
-              handleChange={(e) => setEmployeeLastName(e.target.value)}
+              handleChange={handleEmployeeInput}
             />
             <FormRow
+              labelText="email"
               type="email"
-              name="email"
+              name="employeeEmail"
               value={employeeEmail}
-              handleChange={(e) => setEmployeeEmail(e.target.value)}
+              handleChange={handleEmployeeInput}
             />
             <FormRow
+              labelText="password"
               type="password"
-              name="password"
+              name="employeePassword"
               value={employeePassword}
-              handleChange={(e) => setEmployeePassword(e.target.value)}
+              handleChange={handleEmployeeInput}
+            />
+            <FormRow
+              labelText="salary"
+              type="number"
+              name="employeeSalary"
+              value={employeeSalary}
+              handleChange={handleEmployeeInput}
             />
             <button
               className="btn btn-block"
               type="submit"
               disabled={isLoading}
+              onClick={onSubmitCreateEmployee}
             >
               {isLoading ? "Please Wait..." : "create employee"}
             </button>
