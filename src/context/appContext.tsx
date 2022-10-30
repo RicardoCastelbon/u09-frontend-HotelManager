@@ -35,6 +35,7 @@ import {
   CREATE_EMPLOYEE_ERROR,
   GET_EMPLOYEES_BEGIN,
   GET_EMPLOYEES_SUCCESS,
+  DELETE_EMPLOYEE_BEGIN,
 } from "./actions";
 
 const user = localStorage.getItem("user");
@@ -89,6 +90,7 @@ interface AppContextValue {
   createEmployee: any;
   employees: any[];
   getEmployees: any;
+  deleteEmployee: any;
 }
 
 const initialState = {
@@ -142,6 +144,7 @@ const initialState = {
   employeeSalary: 0,
   employees: [],
   getEmployees: "",
+  deleteEmployee: null,
 };
 
 const AppContext = React.createContext<AppContextValue>(initialState);
@@ -309,6 +312,7 @@ const AppProvider = ({ children }: any) => {
     dispatch({ type: CLEAR_VALUES });
   };
 
+  /* CRUD BOOKINGS */
   const getBookings = async () => {
     const { search, searchStatus, sort } = state;
     let url = `http://localhost:5000/api/v1/bookings?status=${searchStatus}&sort=${sort}`;
@@ -340,7 +344,6 @@ const AppProvider = ({ children }: any) => {
     }
     clearAlert();
   };
-
   const deleteBooking = async (id: number) => {
     dispatch({ type: DELETE_BOOKING_BEGIN });
     try {
@@ -403,6 +406,7 @@ const AppProvider = ({ children }: any) => {
     clearAlert();
   };
 
+  /* CRD EMPLOYEES */
   const createEmployee = async () => {
     dispatch({ type: CREATE_EMPLOYEE_BEGIN });
     try {
@@ -451,7 +455,6 @@ const AppProvider = ({ children }: any) => {
         }
       );
       const { employees } = response.data;
-      console.log(response.data);
       dispatch({
         type: GET_EMPLOYEES_SUCCESS,
         payload: {
@@ -461,6 +464,21 @@ const AppProvider = ({ children }: any) => {
     } catch (error: any) {
       console.log(error);
       clearAlert();
+    }
+  };
+  const deleteEmployee = async (id: number) => {
+    dispatch({ type: DELETE_EMPLOYEE_BEGIN });
+    try {
+      await axios.delete(`http://localhost:5000/api/v1/employees/${id}`, {
+        withCredentials: true,
+      });
+      getEmployees();
+    } catch (error: any) {
+      if (error.response.status === 401) {
+        setTimeout(() => {
+          //logoutUser();
+        }, 3000);
+      }
     }
   };
 
@@ -488,6 +506,7 @@ const AppProvider = ({ children }: any) => {
         clearFilters,
         createEmployee,
         getEmployees,
+        deleteEmployee,
       }}
     >
       {children}

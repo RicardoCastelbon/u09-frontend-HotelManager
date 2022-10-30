@@ -30,6 +30,7 @@ import {
   CREATE_EMPLOYEE_ERROR,
   GET_EMPLOYEES_BEGIN,
   GET_EMPLOYEES_SUCCESS,
+  DELETE_EMPLOYEE_BEGIN,
 } from "./actions";
 
 import { initialState } from "./appContext";
@@ -320,6 +321,10 @@ const reducer = (state: any, action: any) => {
       employees: action.payload.employees,
     };
   }
+
+   if (action.type === DELETE_EMPLOYEE_BEGIN) {
+     return { ...state, isLoading: true };
+   }
 
   throw new Error(`No such action: ${action.type}`);
 };
