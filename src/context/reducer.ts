@@ -28,6 +28,8 @@ import {
   CREATE_EMPLOYEE_BEGIN,
   CREATE_EMPLOYEE_SUCCESS,
   CREATE_EMPLOYEE_ERROR,
+  GET_EMPLOYEES_BEGIN,
+  GET_EMPLOYEES_SUCCESS,
 } from "./actions";
 
 import { initialState } from "./appContext";
@@ -279,30 +281,45 @@ const reducer = (state: any, action: any) => {
     };
   }
 
-   if (action.type === CREATE_EMPLOYEE_BEGIN) {
-     return {
-       ...state,
-       isLoading: true,
-     };
-   }
-   if (action.type === CREATE_EMPLOYEE_SUCCESS) {
-     return {
-       ...state,
-       isLoading: false,
-       showAlert: true,
-       alertType: "success",
-       alertText: "Employee created!!",
-     };
-   }
-   if (action.type === CREATE_EMPLOYEE_ERROR) {
-     return {
-       ...state,
-       isLoading: false,
-       showAlert: true,
-       alertType: "danger",
-       alertText: action.payload.msg,
-     };
-   }
+  if (action.type === CREATE_EMPLOYEE_BEGIN) {
+    return {
+      ...state,
+      isLoading: true,
+    };
+  }
+  if (action.type === CREATE_EMPLOYEE_SUCCESS) {
+    return {
+      ...state,
+      isLoading: false,
+      showAlert: true,
+      alertType: "success",
+      alertText: "Employee created!!",
+    };
+  }
+  if (action.type === CREATE_EMPLOYEE_ERROR) {
+    return {
+      ...state,
+      isLoading: false,
+      showAlert: true,
+      alertType: "danger",
+      alertText: action.payload.msg,
+    };
+  }
+
+  if (action.type === GET_EMPLOYEES_BEGIN) {
+    return {
+      ...state,
+      isLoading: true,
+      showAlert: false,
+    };
+  }
+  if (action.type === GET_EMPLOYEES_SUCCESS) {
+    return {
+      ...state,
+      isLoading: false,
+      employees: action.payload.employees,
+    };
+  }
 
   throw new Error(`No such action: ${action.type}`);
 };

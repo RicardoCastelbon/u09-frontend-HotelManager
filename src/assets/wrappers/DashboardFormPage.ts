@@ -16,7 +16,7 @@ const Wrapper = styled.section`
     padding: 0;
     max-width: 100%;
     width: 100%;
-    margin-bottom:40px;
+    margin-bottom: 40px;
   }
   .form-row {
     margin-bottom: 0;
@@ -45,6 +45,57 @@ const Wrapper = styled.section`
   }
   .clear-btn:hover {
     background: var(--black);
+  }
+
+  margin-top: 4rem;
+  h2 {
+    text-transform: none;
+  }
+  & > h5 {
+    font-weight: 700;
+  }
+  .bookings {
+    overflow-y: scroll;
+  }
+  table {
+    table-layout: auto;
+    width: 100%;
+  }
+  th,
+  td {
+    padding: 0.2rem;
+  }
+  th {
+    background-color: var(--primary-500);
+    color: white;
+    font-weight: 300;
+    text-transform: capitalize;
+    text-align: left;
+  }
+  .border-radius-left {
+    border-radius: 5px 0px 0px 5px;
+  }
+  .border-radius-right {
+    border-radius: 0px 5px 5px 0px;
+  }
+
+  .edit-btn,
+  .delete-btn {
+    letter-spacing: var(--letterSpacing);
+    cursor: pointer;
+    height: 30px;
+  }
+  .edit-btn {
+    color: var(--green-dark);
+    background: var(--green-light);
+    margin-right: 0.5rem;
+  }
+  .delete-btn {
+    color: var(--red-dark);
+    background: var(--red-light);
+  }
+  &:hover .actions {
+    visibility: visible;
   }
   @media (min-width: 992px) {
     .form-center {

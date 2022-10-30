@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Wrapper from "../../assets/wrappers/DashboardFormPage";
-import { FormRow, Alert } from "../../components";
+import { FormRow, Alert, Loading } from "../../components";
+import Employee from "../../components/Employee";
 import { useAppContext } from "../../context/appContext";
 
 type Props = {};
@@ -19,6 +20,8 @@ const Settings = (props: Props) => {
     employeeSalary,
     createEmployee,
     clearValues,
+    getEmployees,
+    employees,
   } = useAppContext();
   const [name, setName] = useState(user?.name);
   const [email, setEmail] = useState(user?.email);
@@ -58,6 +61,10 @@ const Settings = (props: Props) => {
     handleChange({ name: e.target.name, value: e.target.value });
   };
 
+  useEffect(() => {
+    getEmployees();
+  }, []);
+  
   return (
     <Wrapper>
       <form className="form" onSubmit={onSubmit}>
@@ -149,8 +156,26 @@ const Settings = (props: Props) => {
       )}
 
       {/* GET ALL EMPLOYEES */}
-      
-
+      {user.role == "admin" && (
+        <div>
+          <h3>employees</h3>
+          <div className="bookings">
+            <table cellSpacing={0}>
+              <tbody>
+                <tr>
+                  <th className="border-radius-left">name</th>
+                  <th>last name</th>
+                  <th>email</th>
+                  <th className="border-radius-right">salary</th>
+                </tr>
+                {employees.map((employee) => {
+                  return <Employee key={employee._id} {...employee} />;
+                })}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
     </Wrapper>
   );
 };

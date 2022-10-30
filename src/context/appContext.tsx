@@ -33,6 +33,8 @@ import {
   CREATE_EMPLOYEE_BEGIN,
   CREATE_EMPLOYEE_SUCCESS,
   CREATE_EMPLOYEE_ERROR,
+  GET_EMPLOYEES_BEGIN,
+  GET_EMPLOYEES_SUCCESS,
 } from "./actions";
 
 const user = localStorage.getItem("user");
@@ -85,6 +87,8 @@ interface AppContextValue {
   employeePassword: string;
   employeeSalary: number;
   createEmployee: any;
+  employees: any[];
+  getEmployees: any;
 }
 
 const initialState = {
@@ -136,6 +140,8 @@ const initialState = {
   employeePassword: "",
   createEmployee: "",
   employeeSalary: 0,
+  employees: [],
+  getEmployees: "",
 };
 
 const AppContext = React.createContext<AppContextValue>(initialState);
@@ -304,7 +310,7 @@ const AppProvider = ({ children }: any) => {
   };
 
   const getBookings = async () => {
-    const { search, searchStatus, searchType, sort } = state;
+    const { search, searchStatus, sort } = state;
     let url = `http://localhost:5000/api/v1/bookings?status=${searchStatus}&sort=${sort}`;
     if (search) {
       url = url + `&search=${search}`;
@@ -314,6 +320,8 @@ const AppProvider = ({ children }: any) => {
     try {
       const response = await axios.get(url, { withCredentials: true });
       const { bookings, totalBookings, numOfPages } = response.data;
+      console.log(response.data);
+
       dispatch({
         type: GET_BOOKINGS_SUCCESS,
         payload: {
@@ -433,6 +441,28 @@ const AppProvider = ({ children }: any) => {
     }
     clearAlert();
   };
+  const getEmployees = async () => {
+    dispatch({ type: GET_EMPLOYEES_BEGIN });
+    try {
+      const response = await axios.get(
+        "http://localhost:5000/api/v1/employees",
+        {
+          withCredentials: true,
+        }
+      );
+      const { employees } = response.data;
+      console.log(response.data);
+      dispatch({
+        type: GET_EMPLOYEES_SUCCESS,
+        payload: {
+          employees,
+        },
+      });
+    } catch (error: any) {
+      console.log(error);
+      clearAlert();
+    }
+  };
 
   const clearFilters = () => {
     dispatch({ type: CLEAR_FILTERS });
@@ -457,6 +487,7 @@ const AppProvider = ({ children }: any) => {
         editBooking,
         clearFilters,
         createEmployee,
+        getEmployees,
       }}
     >
       {children}
