@@ -183,7 +183,7 @@ const AppProvider = ({ children }: any) => {
     dispatch({ type: REGISTER_USER_BEGIN });
     try {
       const response = await axios.post(
-        "https://hotelmanager-api.onrender.com/api/v1/auth/register",
+        `${process.env.REACT_APP_API_URL}/auth/register`,
         currentUser,
         { withCredentials: true }
       );
@@ -208,7 +208,7 @@ const AppProvider = ({ children }: any) => {
     dispatch({ type: LOGIN_USER_BEGIN });
     try {
       const response = await axios.post(
-        "https://hotelmanager-api.onrender.com/api/v1/auth/login",
+        `${process.env.REACT_APP_API_URL}/auth/login`,
         currentUser,
         { withCredentials: true }
       );
@@ -233,7 +233,7 @@ const AppProvider = ({ children }: any) => {
     dispatch({ type: UPDATE_USER_BEGIN });
     try {
       const response = await axios.patch(
-        "https://hotelmanager-api.onrender.com/api/v1/auth/updateUser",
+        `${process.env.REACT_APP_API_URL}/auth/updateUser`,
         currentUser,
         { withCredentials: true }
       );
@@ -276,7 +276,7 @@ const AppProvider = ({ children }: any) => {
         status,
       } = state;
       await axios.post(
-        "https://hotelmanager-api.onrender.com/api/v1/bookings",
+        `${process.env.REACT_APP_API_URL}/bookings`,
         {
           roomType,
           checkin,
@@ -315,7 +315,7 @@ const AppProvider = ({ children }: any) => {
   /* CRUD BOOKINGS */
   const getBookings = async () => {
     const { search, searchStatus, sort } = state;
-    let url = `https://hotelmanager-api.onrender.com/api/v1/bookings?status=${searchStatus}&sort=${sort}`;
+    let url = `${process.env.REACT_APP_API_URL}/bookings?status=${searchStatus}&sort=${sort}`;
     if (search) {
       url = url + `&search=${search}`;
     }
@@ -347,12 +347,9 @@ const AppProvider = ({ children }: any) => {
   const deleteBooking = async (id: number) => {
     dispatch({ type: DELETE_BOOKING_BEGIN });
     try {
-      await axios.delete(
-        `https://hotelmanager-api.onrender.com/api/v1/bookings/${id}`,
-        {
-          withCredentials: true,
-        }
-      );
+      await axios.delete(`${process.env.REACT_APP_API_URL}/bookings/${id}`, {
+        withCredentials: true,
+      });
       getBookings();
     } catch (error: any) {
       if (error.response.status === 401) {
@@ -381,7 +378,7 @@ const AppProvider = ({ children }: any) => {
       } = state;
 
       await axios.patch(
-        `https://hotelmanager-api.onrender.com/api/v1/bookings/${state.editBookingId}`,
+        `${process.env.REACT_APP_API_URL}/bookings/${state.editBookingId}`,
         {
           roomType,
           checkin,
@@ -421,7 +418,7 @@ const AppProvider = ({ children }: any) => {
         employeeSalary,
       } = state;
       await axios.post(
-        "https://hotelmanager-api.onrender.com/api/v1/employees",
+        `${process.env.REACT_APP_API_URL}/employees`,
         {
           name: employeeName,
           lastName: employeeLastName,
@@ -452,7 +449,7 @@ const AppProvider = ({ children }: any) => {
     dispatch({ type: GET_EMPLOYEES_BEGIN });
     try {
       const response = await axios.get(
-        "https://hotelmanager-api.onrender.com/api/v1/employees",
+      `${process.env.REACT_APP_API_URL}/employees`,
         {
           withCredentials: true,
         }
@@ -473,7 +470,7 @@ const AppProvider = ({ children }: any) => {
     dispatch({ type: DELETE_EMPLOYEE_BEGIN });
     try {
       await axios.delete(
-        `https://hotelmanager-api.onrender.com/api/v1/employees/${id}`,
+        `${process.env.REACT_APP_API_URL}/employees/${id}`,
         {
           withCredentials: true,
         }
