@@ -406,7 +406,7 @@ const AppProvider = ({ children }: any) => {
     clearAlert();
   };
 
-  /* CRD EMPLOYEES */
+  /* CRUD EMPLOYEES */
   const createEmployee = async () => {
     dispatch({ type: CREATE_EMPLOYEE_BEGIN });
     try {
@@ -444,12 +444,13 @@ const AppProvider = ({ children }: any) => {
       });
     }
     clearAlert();
+    getEmployees();
   };
   const getEmployees = async () => {
     dispatch({ type: GET_EMPLOYEES_BEGIN });
     try {
       const response = await axios.get(
-      `${process.env.REACT_APP_API_URL}/employees`,
+        `${process.env.REACT_APP_API_URL}/employees`,
         {
           withCredentials: true,
         }
@@ -469,12 +470,9 @@ const AppProvider = ({ children }: any) => {
   const deleteEmployee = async (id: number) => {
     dispatch({ type: DELETE_EMPLOYEE_BEGIN });
     try {
-      await axios.delete(
-        `${process.env.REACT_APP_API_URL}/employees/${id}`,
-        {
-          withCredentials: true,
-        }
-      );
+      await axios.delete(`${process.env.REACT_APP_API_URL}/employees/${id}`, {
+        withCredentials: true,
+      });
       getEmployees();
     } catch (error: any) {
       if (error.response.status === 401) {
