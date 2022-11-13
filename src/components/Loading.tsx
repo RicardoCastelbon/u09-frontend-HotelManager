@@ -1,5 +1,5 @@
 type Props = {
-  center: any;
+  center;
 };
 const Loading = (props: Props) => {
   return (

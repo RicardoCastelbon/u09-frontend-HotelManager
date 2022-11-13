@@ -2,7 +2,7 @@ import { NavLink } from "react-router-dom";
 import links from "../utils/links";
 
 type Props = {};
-const Navlinks = (toggleSidebar: any) => {
+const Navlinks = (toggleSidebar) => {
   return (
     <div className="nav-links">
       {links.map((link) => {
@@ -13,7 +13,9 @@ const Navlinks = (toggleSidebar: any) => {
             key={id}
             onClick={toggleSidebar}
             end
-            className={({ isActive }) => (isActive ? "nav-link active" : "nav-link")}
+            className={({ isActive }) =>
+              isActive ? "nav-link active" : "nav-link"
+            }
           >
             <span className="icon">{icon}</span>
             {text}

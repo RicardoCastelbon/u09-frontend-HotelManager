@@ -25,7 +25,7 @@ const AddBooking = (props: Props) => {
     editBooking,
   } = useAppContext();
 
-  const onSubmit = (e: any) => {
+  const onSubmit = (e) => {
     e.preventDefault();
     if (!price || !firstName || !lastName || !email || !phone) {
       displayAlert();
@@ -38,7 +38,7 @@ const AddBooking = (props: Props) => {
     createBooking();
   };
 
-  const handleBookingInput = (e: any) => {
+  const handleBookingInput = (e) => {
     handleChange({ name: e.target.name, value: e.target.value });
   };
 

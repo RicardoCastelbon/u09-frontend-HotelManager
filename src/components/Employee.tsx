@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { useAppContext } from "../context/appContext";
 
-const Employee = ({ _id, name, lastName, email, salary }: any) => {
+const Employee = ({ _id, name, lastName, email, salary }) => {
   const { deleteEmployee } = useAppContext();
   return (
     <tr>
@@ -9,15 +9,6 @@ const Employee = ({ _id, name, lastName, email, salary }: any) => {
       <td>{lastName}</td>
       <td>{email}</td>
       <td>{salary}€</td>
-      <td>
-        {/* <Link
-          to="/add-booking"
-          className="btn edit-btn"
-          //onClick={() => setEditBooking(_id)}
-        >
-          Edit
-        </Link> */}
-      </td>
       <td>
         <button
           type="button"

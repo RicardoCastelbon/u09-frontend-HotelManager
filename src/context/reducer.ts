@@ -35,7 +35,7 @@ import {
 
 import { initialState } from "./appContext";
 
-const reducer = (state: any, action: any) => {
+const reducer = (state, action) => {
   if (action.type === DISPLAY_ALERT) {
     return {
       ...state,
@@ -214,7 +214,7 @@ const reducer = (state: any, action: any) => {
 
   if (action.type === SET_EDIT_BOOKING) {
     const booking = state.bookings.find(
-      (booking: any) => booking._id === action.payload.id
+      (booking) => booking._id === action.payload.id
     );
     const {
       _id,
@@ -322,9 +322,9 @@ const reducer = (state: any, action: any) => {
     };
   }
 
-   if (action.type === DELETE_EMPLOYEE_BEGIN) {
-     return { ...state, isLoading: true };
-   }
+  if (action.type === DELETE_EMPLOYEE_BEGIN) {
+    return { ...state, isLoading: true };
+  }
 
   throw new Error(`No such action: ${action.type}`);
 };

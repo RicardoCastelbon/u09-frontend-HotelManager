@@ -27,7 +27,7 @@ const Settings = (props: Props) => {
   const [email, setEmail] = useState(user?.email);
   const [lastName, setLastName] = useState(user?.lastName);
 
-  const onSubmit = (e: any) => {
+  const onSubmit = (e) => {
     e.preventDefault();
     if (!email || !name || !lastName) {
       displayAlert();
@@ -35,7 +35,7 @@ const Settings = (props: Props) => {
     }
     updateUser({ name, email, lastName });
   };
-  const onSubmitCreateEmployee = (e: any) => {
+  const onSubmitCreateEmployee = (e) => {
     e.preventDefault();
     console.log({
       employeeName,
@@ -57,14 +57,14 @@ const Settings = (props: Props) => {
     createEmployee();
   };
 
-  const handleEmployeeInput = (e: any) => {
+  const handleEmployeeInput = (e) => {
     handleChange({ name: e.target.name, value: e.target.value });
   };
 
   useEffect(() => {
     getEmployees();
   }, []);
-  
+
   return (
     <Wrapper>
       <form className="form" onSubmit={onSubmit}>

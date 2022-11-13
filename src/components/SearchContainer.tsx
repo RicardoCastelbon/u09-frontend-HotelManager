@@ -14,12 +14,12 @@ const SearchContainer = () => {
     clearFilters,
   } = useAppContext();
 
-  const handleSearch = (e: any) => {
+  const handleSearch = (e) => {
     if (isLoading) return;
     handleChange({ name: e.target.name, value: e.target.value });
   };
 
-  const handleSubmit = (e: any) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     clearFilters();
   };
@@ -31,7 +31,7 @@ const SearchContainer = () => {
         <div className="form-center">
           {/* search */}
           <FormRow
-          labelText="search by last name"
+            labelText="search by last name"
             type="text"
             name="search"
             value={search}
